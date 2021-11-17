@@ -1,0 +1,32 @@
+version: '3'
+services:
+  db:
+    image: postgres:10.5
+    container_name: db-container
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mlflowdb
+    volumes:
+      - ../var:/var/lib/postgresql/data:rw
+
+  mlflow:
+    build: .
+    container_name: mlflow-container
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+    environment:
+      DB_URI: postgres:postgres@db:5432/mlflowdb
+#      ARCTIFACT_URI: ../artifact
+    command: mlflow server --host 0.0.0.0 --port 5000
+ #   command: mlflow server --backend-store-uri postgres:postgres@db:5432/mlflowdb --default-artifact-root ../artifact --host 0.0.0.0 --port 5000
+# volumes:
+#   db-volume:
+#     driver_opts:
+#       type: none
+#       device: ../var
+#       o: bind

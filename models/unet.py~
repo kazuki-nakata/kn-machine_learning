@@ -1,0 +1,37 @@
+class UNet():
+    def __init__(self, config):
+        self.base_model = tf.keras.applications.MobileNetV2( input_shape=self.config.model.input, include_top=False)
+        self.batch_size = self.config.train.batch_size
+        . . .
+
+    def load_data(self):
+        """Loads and Preprocess data """
+        self.dataset, self.info = DataLoader().load_data(self.config.data)
+        self._preprocess_data()
+
+    def _preprocess_data(self):
+
+    def _set_training_parameters(self):
+
+    def _normalize(self, input_image, input_mask):
+
+    def _load_image_train(self, datapoint):
+
+    def _load_image_test(self, datapoint):
+
+    def build(self):
+        """ Builds the Keras model based """
+        layer_names = [
+            'block_1_expand_relu',  # 64x64
+            'block_3_expand_relu',  # 32x32
+            'block_6_expand_relu',  # 16x16
+            'block_13_expand_relu',  # 8x8
+            'block_16_project',  # 4x4
+        ]
+        layers = [self.base_model.get_layer(name).output for name in layer_names]
+
+        self.model = tf.keras.Model(inputs=inputs, outputs=x)
+
+    def train(self):
+
+    def evaluate(self):
