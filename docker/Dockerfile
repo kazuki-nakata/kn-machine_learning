@@ -1,9 +1,16 @@
-FROM continuumio/miniconda3:4.10.3
+FROM conda/miniconda3:latest
 
-RUN pip install mlflow>=1.0 \
-    && pip install azure-storage-blob==12.3.0 \
-    && pip install numpy==1.21.2 \
-    && pip install scipy \
-    && pip install pandas==1.3.3 \
-    && pip install scikit-learn==0.24.2 \
-    && pip install cloudpickle
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    python3-dev \
+    libpq-dev
+
+RUN pip install -U pip && \
+    pip install psycopg2 mlflow
+
+RUN apt-get install gosu
+
+COPY ./start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+
+ENTRYPOINT ["/usr/local/bin/start.sh"]
